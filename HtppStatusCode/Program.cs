@@ -16,6 +16,8 @@ builder.Services.AddDbContext<SqlDbcontext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("WebApiDb"));
 });
 builder.Services.AddScoped<ICategoryDAL, CategoryDAL>();
+builder.Services.AddScoped<ISehirDAL, SehirDAL>();
+builder.Services.AddScoped<IilceDAL, IlceDAL>();
 
 //builder.Services.AddSwaggerGen(opt =>
 //{
