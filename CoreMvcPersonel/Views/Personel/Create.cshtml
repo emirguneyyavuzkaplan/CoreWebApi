@@ -45,10 +45,18 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Adres.IlceId" class="control-label">İlce</label>
-                        <select asp-for="Adres.IlceId" id="İlcelerCombo"> 
+                        <select asp-for="Adres.IlceId" id="ilcelerCombo"> 
                             <option> Seciniz</option>
                         </select>
                         <option> Seciniz</option>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PhotoUrl" class="control-label"></label>
+                        <input asp-for="PhotoUrl" class="form-control"  accept="image/*"/>
+                        <span asp-validation-for="PhotoUrl"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Kaydet" class="btn btn-primary"/>
                     </div>
                 </form>
             </div>
@@ -56,20 +64,44 @@
     </div>
 </div>
 
-    @section Scripts{
-        <script type="text/javascript">
-$(document).ready(fun
-    (){
-    var url = "http://localhost:5097/api/Sehir";
-    $.ajax({
-        url:url,
-        type:'GET',
-        DataType:'Json',
-        success: function(result) 
-        {
-            console.log(result);
-
-        }
-    });
-            </script>
-    }
+ @section Scripts
+{
+    <script type="text/javascript">
+    
+    $(document).ready(function() {    // Bütün Dokuman yuklendikten conra aşagidaki kodlar calissin.
+       
+        var sehirlerUrl = "http://localhost:5097/api/Sehir";
+        
+        $.ajax({
+            url: sehirlerUrl,
+            type: 'GET',
+            dataType: 'json',
+            success: function(result) {
+                for (let key in result) {
+                    $("#sehirlerCombo")
+                    .append("<option value=" + result[key].id + ">" + result[key].sehirAdi + "</option>");
+                }
+            }
+        });//Ajax
+        //SehirlerCombo degisklik oldugunda yapilacaklar
+        $("#sehirlerCombo").change(function() {
+            var sehirId = $(this).find(":selected").val();
+            var ilceUrl = "http://localhost:5097/api/Ilce?sehirId=" + sehirId;
+            $.ajax({
+            url: ilceUrl,
+            type: 'GET',
+            dataType: 'json',
+            success: function(result) {
+                console.log(result);
+                $("#ilcelerCombo").children().remove();
+                for (let key in result) {
+                    $("#ilcelerCombo")
+                    .append("<option value=" + result[key].id + ">" + result[key].ilceAdi + "</option>");
+                }
+            }
+        });//Ajax
+        });
+    })
+       
+    </script>
+}

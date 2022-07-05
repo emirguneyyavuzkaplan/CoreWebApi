@@ -15,6 +15,7 @@ namespace CoreMvcPersonel.Models.DTOs.PersonelDTOs
         public string? Gsm { get; set; }
         public Adres? Adres { get; set; }
         public Fotograf Fotograf { get; set; }
+        public IFormFile PhotoUrl { get; set; }
 
     }
 }
